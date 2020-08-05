@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.smartframework.data.datasource.DruidDataSourceAutoConfiguration,\
+  org.smartframework.data.mybatis.MybatisAutoConfiguration,\
+  org.smartframework.data.mybatis.plus.MybatisPlusAutoConfiguration
