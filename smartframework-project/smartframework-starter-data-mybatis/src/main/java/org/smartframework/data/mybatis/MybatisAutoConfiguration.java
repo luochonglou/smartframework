@@ -3,19 +3,19 @@
  */
 package org.smartframework.data.mybatis;
 
-import com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.smartframework.data.exception.MybatisConfigureException;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.StringUtils;
+import org.springframework.core.env.Environment;
 
-import java.util.List;
+import javax.sql.DataSource;
+import java.util.Objects;
 
 /**
  * 类描述：Mybatis自动配置 <br>
@@ -25,23 +25,27 @@ import java.util.List;
  * @Date: 2020/8/5 16:06
  */
 @Configuration
-@AutoConfigureBefore(MybatisPlusAutoConfiguration.class)
-public class MybatisAutoConfiguration implements BeanFactoryAware {
-
-    private BeanFactory beanFactory;
+@ConditionalOnClass({SqlSessionFactory.class, SqlSessionFactoryBean.class})
+@ConditionalOnSingleCandidate(DataSource.class)
+public class MybatisAutoConfiguration implements EnvironmentAware {
 
     @Bean
-    @ConditionalOnMissingBean(MapperScannerConfigurer.class)
     public MapperScannerConfigurer scannerConfigurer() {
-        List<String> packages = AutoConfigurationPackages.get(this.beanFactory);
-        String basePackages = StringUtils.collectionToCommaDelimitedString(packages);
         MapperScannerConfigurer scannerConfigurer = new MapperScannerConfigurer();
         scannerConfigurer.setBasePackage(basePackages);
         return scannerConfigurer;
     }
 
+    /**
+     * basePackage
+     */
+    private String basePackages;
+
     @Override
-    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-        this.beanFactory = beanFactory;
+    public void setEnvironment(Environment environment) {
+        this.basePackages = environment.getProperty("mybatis-plus.base-packages");
+        if (Objects.isNull(basePackages)) {
+            throw new MybatisConfigureException("mybatis-plus.base-packages must configure.");
+        }
     }
 }
