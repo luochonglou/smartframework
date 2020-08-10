@@ -11,10 +11,11 @@ import org.smartframework.common.exception.basic.DefaultExceptionCode;
 import org.smartframework.common.result.ExceptionResponse;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.ValidationException;
@@ -29,8 +30,37 @@ import java.util.stream.Collectors;
  * @Date: 2020/7/24 18:08
  */
 @Slf4j
-@ControllerAdvice
+//@ControllerAdvice
 public class GlobalExceptionHandler {
+
+
+    /**
+     * 资源路径不存在
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(value = NoHandlerFoundException.class)
+    @ResponseBody
+    public Object handleNoHandlerFoundException(HttpServletResponse response, NoHandlerFoundException e) {
+        response.setStatus(404);
+        log.error(e.getMessage(), e);
+        return ExceptionResponse.newInstance(DefaultExceptionCode.NO_HANDLER.getCode(), DefaultExceptionCode.NO_HANDLER.getMsg());
+    }
+
+    /**
+     * 请求方式不允许
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
+    @ResponseBody
+    public Object handleNoHandlerFoundException(HttpServletResponse response, HttpRequestMethodNotSupportedException e) {
+        response.setStatus(405);
+        log.error(e.getMessage(), e);
+        return ExceptionResponse.newInstance(DefaultExceptionCode.METHOD_NOT_ALLOWED.getCode(), DefaultExceptionCode.METHOD_NOT_ALLOWED.getMsg());
+    }
 
 
     /**
@@ -41,10 +71,10 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseBody
-    public Object handleValidException(HttpServletResponse response, MethodArgumentNotValidException e) {
+    public Object handleMethodArgumentNotValidException(HttpServletResponse response, MethodArgumentNotValidException e) {
         response.setStatus(400);
         log.error(e.getMessage(), e);
-        return handleValidation(e.getBindingResult());
+        return validationResult(e.getBindingResult());
     }
 
     /**
@@ -55,10 +85,10 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = BindException.class)
     @ResponseBody
-    public Object handleValidException(HttpServletResponse response, BindException e) {
+    public Object handleBindException(HttpServletResponse response, BindException e) {
         response.setStatus(400);
         log.error(e.getMessage(), e);
-        return handleValidation(e.getBindingResult());
+        return validationResult(e.getBindingResult());
     }
 
     /**
@@ -69,7 +99,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = BusinessException.class)
     @ResponseBody
-    public Object handleArmorBusinessException(HttpServletResponse response, BusinessException e) {
+    public Object handleBusinessException(HttpServletResponse response, BusinessException e) {
         response.setStatus(400);
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(e.getCode(), e.getMsg());
@@ -84,7 +114,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = ValidationException.class)
     @ResponseBody
-    public Object handleArmorValidationException(HttpServletResponse response, ValidationException e) {
+    public Object handleValidationException(HttpServletResponse response, ValidationException e) {
         response.setStatus(400);
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(DefaultExceptionCode.PARAMETER_MISMATCH.getCode(),
@@ -99,7 +129,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = SystemException.class)
     @ResponseBody
-    public Object handleArmorServiceException(HttpServletResponse response, SystemException e) {
+    public Object handleSystemException(HttpServletResponse response, SystemException e) {
         response.setStatus(500);
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(DefaultExceptionCode.SYSTEM.getCode(), Optional.ofNullable(e.getMessage()).orElse(DefaultExceptionCode.SYSTEM.getMsg()));
@@ -112,7 +142,7 @@ public class GlobalExceptionHandler {
      * @param e
      * @return
      */
-    @ExceptionHandler
+    @ExceptionHandler(Exception.class)
     @ResponseBody
     public Object handleException(HttpServletResponse response, Exception e) {
         if (e instanceof BusinessExceptionWrapper) {
@@ -131,7 +161,7 @@ public class GlobalExceptionHandler {
      * @param bindingResult
      * @return
      */
-    private Object handleValidation(BindingResult bindingResult) {
+    private Object validationResult(BindingResult bindingResult) {
         String msg = Optional.ofNullable(bindingResult)
                 .map(r -> r.getFieldErrors())
                 .map(fe -> fe.stream().map(e -> e.getDefaultMessage()).collect(Collectors.joining(",")))
