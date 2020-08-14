@@ -9,6 +9,7 @@ import org.smartframework.boot.web.resolver.HeaderParamsResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -25,8 +26,8 @@ import java.util.List;
 @Slf4j
 @Configuration
 @ComponentScan("org.smartframework.boot.web.advice")
+@ImportResource
 public class WebMvcAutoConfigurer implements WebMvcConfigurer {
-
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
@@ -34,13 +35,11 @@ public class WebMvcAutoConfigurer implements WebMvcConfigurer {
         argumentResolvers.add(headerArgumentResolver());
     }
 
-
     @Override
     public void addFormatters(FormatterRegistry registry) {
         //字符串转枚举
         registry.addConverterFactory(stringToBasicEnumConverterFactory());
     }
-
 
     /**
      * 请求头参数解析器
@@ -52,7 +51,6 @@ public class WebMvcAutoConfigurer implements WebMvcConfigurer {
         return new HeaderParamsResolver();
     }
 
-
     /**
      * 字符串转换枚举
      *
@@ -63,6 +61,5 @@ public class WebMvcAutoConfigurer implements WebMvcConfigurer {
     public StringToBasicEnumConverterFactory stringToBasicEnumConverterFactory() {
         return new StringToBasicEnumConverterFactory();
     }
-
 
 }

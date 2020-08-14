@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.smartframework.common.exception.basic.BusinessExceptionCode;
 
 /**
  * 类描述： 异常响应<br>
@@ -40,6 +41,17 @@ public class ExceptionResponse implements BaseResult {
         ExceptionResponse response = new ExceptionResponse();
         response.setCode(code);
         response.setMsg(msg);
+        return response;
+    }
+
+    /**
+     * @param exceptionCode
+     * @return
+     */
+    public static ExceptionResponse newInstance(BusinessExceptionCode exceptionCode) {
+        ExceptionResponse response = new ExceptionResponse();
+        response.setCode(exceptionCode.getCode());
+        response.setMsg(exceptionCode.getMsg());
         return response;
     }
 }

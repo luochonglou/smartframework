@@ -31,18 +31,6 @@ public enum DefaultExceptionCode implements BusinessExceptionCode {
      */
     BUSINESS_DEFAULT(0, "操作失败"),
 
-
-    /**
-     * 资源路径不存在
-     */
-    NO_HANDLER(404, "资源路径不存在"),
-
-    /**
-     * 请求方式不允许
-     */
-    METHOD_NOT_ALLOWED(405, "请求方式不允许"),
-
-
     /**
      * 默认参数异常
      */

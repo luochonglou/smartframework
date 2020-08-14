@@ -1,2 +1,4 @@
+org.springframework.boot.env.EnvironmentPostProcessor=\
+  org.smartframework.boot.web.WebMvcEnvironmentPostProcessor
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   org.smartframework.boot.web.WebMvcAutoConfigurer
