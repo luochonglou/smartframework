@@ -1,2 +1,4 @@
+org.springframework.boot.env.EnvironmentPostProcessor=\
+  org.smartframework.cloud.feign.EurekaEnvironmentPostProcessor
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   org.smartframework.cloud.feign.FeignAutoConfiguration

@@ -16,6 +16,7 @@ import org.smartframework.common.exception.basic.DefaultExceptionCode;
 import org.smartframework.common.result.ExceptionResponse;
 import org.smartframework.common.FeignFlag;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +35,7 @@ import java.util.Optional;
  */
 @Slf4j
 @Configuration
+@EnableEurekaClient
 @EnableCircuitBreaker
 @EnableFeignClients(basePackages = {"**.microservices"})
 public class FeignAutoConfiguration {
