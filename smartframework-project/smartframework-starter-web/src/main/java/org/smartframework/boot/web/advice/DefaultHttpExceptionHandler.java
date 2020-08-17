@@ -49,7 +49,7 @@ public abstract class DefaultHttpExceptionHandler {
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.METHOD_NOT_ALLOWED)
-    public Object httpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+    public Object handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(DefaultHttpExceptionCode.METHOD_NOT_SUPPORTED);
     }
@@ -63,7 +63,7 @@ public abstract class DefaultHttpExceptionHandler {
     @ExceptionHandler(value = HttpMediaTypeNotSupportedException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-    public Object HttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e) {
+    public Object handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e) {
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(DefaultHttpExceptionCode.MEDIA_TYPE_NOT_SUPPORTED);
     }
@@ -77,7 +77,7 @@ public abstract class DefaultHttpExceptionHandler {
     @ExceptionHandler(value = HttpMediaTypeNotAcceptableException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE)
-    public Object HttpMediaTypeNotAcceptableException(HttpMediaTypeNotAcceptableException e) {
+    public Object handleHttpMediaTypeNotAcceptableException(HttpMediaTypeNotAcceptableException e) {
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(DefaultHttpExceptionCode.MEDIA_TYPE_NOT_ACCEPTABLE);
     }
@@ -91,7 +91,7 @@ public abstract class DefaultHttpExceptionHandler {
     @ExceptionHandler(value = MissingPathVariableException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-    public Object MissingPathVariableException(MissingPathVariableException e) {
+    public Object handleMissingPathVariableException(MissingPathVariableException e) {
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(DefaultHttpExceptionCode.MISSING_PATH_VARIABLE);
     }
@@ -105,7 +105,7 @@ public abstract class DefaultHttpExceptionHandler {
     @ExceptionHandler(value = MissingServletRequestParameterException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public Object MissingServletRequestParameterException(MissingServletRequestParameterException e) {
+    public Object handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(DefaultHttpExceptionCode.MISSING_SERVLET_REQUEST_PARAMETER);
     }
@@ -119,7 +119,7 @@ public abstract class DefaultHttpExceptionHandler {
     @ExceptionHandler(value = ServletRequestBindingException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public Object ServletRequestBindingException(ServletRequestBindingException e) {
+    public Object handleServletRequestBindingException(ServletRequestBindingException e) {
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(DefaultHttpExceptionCode.SERVLET_REQUEST_BINDING);
     }
@@ -133,7 +133,7 @@ public abstract class DefaultHttpExceptionHandler {
     @ExceptionHandler(value = ConversionNotSupportedException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-    public Object ConversionNotSupportedException(ConversionNotSupportedException e) {
+    public Object handleConversionNotSupportedException(ConversionNotSupportedException e) {
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(DefaultHttpExceptionCode.CONVERSION_NOT_SUPPORTED);
     }
@@ -147,7 +147,7 @@ public abstract class DefaultHttpExceptionHandler {
     @ExceptionHandler(value = TypeMismatchException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public Object TypeMismatchException(TypeMismatchException e) {
+    public Object handleTypeMismatchException(TypeMismatchException e) {
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(DefaultHttpExceptionCode.TYPE_MISMATCH);
     }
@@ -161,7 +161,7 @@ public abstract class DefaultHttpExceptionHandler {
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public Object HttpMessageNotReadableException(HttpMessageNotReadableException e) {
+    public Object handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(DefaultHttpExceptionCode.MESSAGE_NOT_READABLE);
     }
@@ -175,7 +175,7 @@ public abstract class DefaultHttpExceptionHandler {
     @ExceptionHandler(value = HttpMessageNotWritableException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-    public Object HttpMessageNotWritableException(HttpMessageNotWritableException e) {
+    public Object handleHttpMessageNotWritableException(HttpMessageNotWritableException e) {
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(DefaultHttpExceptionCode.MESSAGE_NOT_WRITABLE);
     }
@@ -189,7 +189,7 @@ public abstract class DefaultHttpExceptionHandler {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public Object MethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public Object handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(DefaultHttpExceptionCode.METHOD_ARGUMENT_NOT_VALID.getCode(), getMsg(e.getBindingResult(), DefaultHttpExceptionCode.METHOD_ARGUMENT_NOT_VALID.getMsg()));
     }
@@ -203,7 +203,7 @@ public abstract class DefaultHttpExceptionHandler {
     @ExceptionHandler(value = MissingServletRequestPartException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public Object MissingServletRequestPartException(MissingServletRequestPartException e) {
+    public Object handleMissingServletRequestPartException(MissingServletRequestPartException e) {
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(DefaultHttpExceptionCode.MISSING_SERVLET_REQUEST_PART);
     }
@@ -217,7 +217,7 @@ public abstract class DefaultHttpExceptionHandler {
     @ExceptionHandler(value = BindException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public Object BindException(BindException e) {
+    public Object handleBindException(BindException e) {
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(DefaultHttpExceptionCode.BIND.getCode(), getMsg(e.getBindingResult(), DefaultHttpExceptionCode.BIND.getMsg()));
     }
@@ -231,7 +231,7 @@ public abstract class DefaultHttpExceptionHandler {
     @ExceptionHandler(value = NoHandlerFoundException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public Object NoHandlerFoundException(NoHandlerFoundException e) {
+    public Object handleNoHandlerFoundException(NoHandlerFoundException e) {
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(DefaultHttpExceptionCode.NO_HANDLER_FOUND);
     }
@@ -245,7 +245,7 @@ public abstract class DefaultHttpExceptionHandler {
     @ExceptionHandler(value = AsyncRequestTimeoutException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.SERVICE_UNAVAILABLE)
-    public Object AsyncRequestTimeoutException(AsyncRequestTimeoutException e) {
+    public Object handleAsyncRequestTimeoutException(AsyncRequestTimeoutException e) {
         log.error(e.getMessage(), e);
         return ExceptionResponse.newInstance(DefaultHttpExceptionCode.ASYNC_REQUEST_TIMEOUT);
     }
