@@ -6,7 +6,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
 -->
 <configuration scan="false" scanPeriod="60 seconds" debug="false">
 
-    <springProperty scope="context" name="logPath" source="logging.path" defaultValue="/logs"/>
+    <springProperty scope="context" name="logPath" source="logging.file.path" defaultValue="/logs"/>
     <springProperty scope="context" name="appName" source="spring.application.name" defaultValue="localhost"/>
 
     <!-- 定义日志的根目录 -->
@@ -80,14 +80,20 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
     -->
     <logger name="org.springframework" level="ERROR"/>
 
+
     <springProfile name="dev,test">
-        <logger name="org.mybatis" level="DEBUG"/>
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="NORMAL_LOG"/>
+            <appender-ref ref="ERROR_LOG" level="ERROR"/>
+        </root>
     </springProfile>
 
-    <root level="INFO">
-        <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="NORMAL_LOG" level="INFO"/>
-        <appender-ref ref="ERROR_LOG" level="ERROR"/>
-    </root>
-
+    <springProfile name="pro">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="NORMAL_LOG"/>
+            <appender-ref ref="ERROR_LOG" level="ERROR"/>
+        </root>
+    </springProfile>
 </configuration>
