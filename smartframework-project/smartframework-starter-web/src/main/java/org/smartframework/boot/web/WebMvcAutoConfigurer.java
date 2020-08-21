@@ -3,14 +3,17 @@
  */
 package org.smartframework.boot.web;
 
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.extern.slf4j.Slf4j;
 import org.smartframework.boot.web.converter.StringToBasicEnumConverterFactory;
 import org.smartframework.boot.web.resolver.HeaderParamsResolver;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -62,4 +65,21 @@ public class WebMvcAutoConfigurer implements WebMvcConfigurer {
         return new StringToBasicEnumConverterFactory();
     }
 
+
+    /**
+     * Jackson全局转化long类型为String，解决Long类型给到前端js会自动转换为Number类型后丢失精度问题
+     *
+     * @return Jackson2ObjectMapperBuilderCustomizer 注入的对象
+     */
+    @Bean
+    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
+        Jackson2ObjectMapperBuilderCustomizer customizer = new Jackson2ObjectMapperBuilderCustomizer() {
+            @Override
+            public void customize(Jackson2ObjectMapperBuilder jacksonObjectMapperBuilder) {
+                jacksonObjectMapperBuilder.serializerByType(Long.class, ToStringSerializer.instance)
+                        .serializerByType(Long.TYPE, ToStringSerializer.instance);
+            }
+        };
+        return customizer;
+    }
 }
