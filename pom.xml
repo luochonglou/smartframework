@@ -26,6 +26,7 @@
         <smartframework.version>1.0.0-SNAPSHOT</smartframework.version>
         <mapstruct.version>1.3.1.Final</mapstruct.version>
         <lombok.version>1.18.12</lombok.version>
+        <commons-lang3.version>3.10</commons-lang3.version>
     </properties>
 
     <dependencyManagement>
@@ -82,6 +83,13 @@
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
                 <version>${mapstruct.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
